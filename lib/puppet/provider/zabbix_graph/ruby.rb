@@ -1,21 +1,30 @@
-$LOAD_PATH.unshift("#{File.dirname(__FILE__)}/../../../lib/ruby/")
-require "zabbix"
+require "puppet/provider/zabbix"
 
-Puppet::Type.type(:zabbix_graph).provide(:ruby) do
+Puppet::Type.type(:zabbix_graph).provide :ruby, :parent => Puppet::Provider::Zabbix do
   desc "zabbix graph provider"
   
   def exists?
-    extend Zabbix
-    zbx.graphs.get_id( 
-      :name => resource[:name] 
-    ).is_a? Integer
+    zabbix.client.api_request(
+      :method => "graph.exists",
+      :params => {
+        :name => resource[:name],
+        :host => resource[:host]
+      })
   end
   
   def create
-    extend Zabbix
+    require 'pp'
+    pp resource[:items]
+    zabbix.graphs.create(
+      :gitems => [resource[:items]],
+      :show_triggers => resource[:show_triggers],
+      :name => resource[:name],
+      :width => resource[:width],
+      :height => resource[:height]
+    )
   end
   
   def destroy
-    extend Zabbix
+    
   end
 end

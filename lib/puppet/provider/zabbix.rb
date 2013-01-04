@@ -1,13 +1,8 @@
-# @todo delete this file when done with refactoring to:
-# require "puppet/provider/zabbix"
-require "puppet"
 require "zabbixapi"
 
-# mixin for generic zabbix api stuff
-module Zabbix
-  # initialy load config and setup zabbix api
-  def zbx
-    
+class Puppet::Provider::Zabbix < Puppet::Provider
+  
+  def zabbix
     config_file = File.join(File.dirname(Puppet.settings[:config]), "zabbix.yaml")
     raise(Puppet::ParseError, "Zabbix report config file #{config_file} not readable") unless File.exist?(config_file)
     config = YAML.load_file(config_file)
@@ -19,5 +14,5 @@ module Zabbix
     )
     return zbx
   end
-
+  
 end
