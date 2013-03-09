@@ -35,6 +35,8 @@ class zabbix::server (
   $db_database = hiera('db_database', 'zabbix'),
   $db_user     = hiera('db_user', 'root'),
   $db_password = hiera('db_password', '')) {
+  
+  include activerecord
   require zabbix::agent
 
   case $::operatingsystem {
@@ -57,10 +59,6 @@ class zabbix::server (
     default => true,
   }
 
-  package { 'activerecord':
-    ensure => $ensure,
-  }
-
   file { $conf_file:
     ensure  => $ensure,
     content => template($template),
@@ -71,7 +69,7 @@ class zabbix::server (
     enable => $service_enable,
   }
 
-  Package['activerecord'] -> File[$conf_file] ~> Service['zabbix-server']
+  Class['activerecord'] -> File[$conf_file] ~> Service['zabbix-server']
 
   if $export == present {
     # export myself to all agents
