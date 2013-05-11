@@ -2,7 +2,6 @@ rvm:
   - 1.8.7
   - 1.9.3
 before_script:
-  - /usr/bin/apt-key adv --keyserver keys.gnupg.net --recv-keys 8FF57A0425FFD7E7
   - echo 'deb http://repo.zabbixzone.com/debian squeeze main' >>/etc/apt/sources.list
   - sudo apt-get update -y
   - sudo apt-get install -y zabbix-server-mysql zabbix-frontend-php
