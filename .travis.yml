@@ -3,7 +3,7 @@ rvm:
   - 1.9.3
 before_script:
   - sudo /usr/bin/apt-key adv --keyserver keys.gnupg.net --recv-keys 8FF57A0425FFD7E7
-  - sudo echo 'deb http://repo.zabbixzone.com/debian squeeze main' >>/etc/apt/sources.list
+  - sudo echo 'deb http://repo.zabbixzone.com/debian squeeze main' >>/etc/apt/sources.list.d/zabbixone.list
   - sudo apt-get update -y
   - sudo apt-get install -y zabbix-server-mysql zabbix-frontend-php
   - mysql -u root -e "use zabbix; insert into users_groups(usrgrpid, userid) values(10,1);"
